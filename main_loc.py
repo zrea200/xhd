@@ -6,6 +6,8 @@ from wechatpy.crypto import WeChatCrypto
 from typing import Dict, Any
 from hashlib import sha1
 import logging
+import fastapi_cdn_host
+
 
 # 配置日志
 logging.basicConfig(
@@ -20,7 +22,7 @@ ENCODING_AES_KEY = "BbXGJfvbsjzEuKL3sDtVSIWhCo7UUf8sYSjrQPwn5A0"
 CORP_ID = "ww675f6f1bb032977f"
 
 app = FastAPI(title="企业微信智能机器人后台")
-
+fastapi_cdn_host.patch_docs(app)
 # 跨域中间件（开发环境使用，生产环境建议限制来源）
 app.add_middleware(
     CORSMiddleware,
@@ -68,6 +70,12 @@ def encrypt_message(reply_xml: str, nonce: str, timestamp: str) -> str:
     except Exception as e:
         logger.error(f"消息加密异常: {str(e)}")
         raise
+
+# @app.get("/wechat/tttest")
+
+# return "AAAA"
+    
+
 
 
 @app.get("/wechat/robot/callback")
